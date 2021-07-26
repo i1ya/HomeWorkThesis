@@ -83,3 +83,4 @@ fabric.properties
 
 # Do not track site DB files
 /**/se.db
+/**/theseswork.db
