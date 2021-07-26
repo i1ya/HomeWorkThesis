@@ -1,22 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <head lang="en">
-    <meta charset="UTF-8">
-    <title>Flask React</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- styles -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Hello Flask</h1>
-      <br>
-      <div id="main"></div>
+{% extends 'base.html' %}
+
+{% block title %}Сервис по сбору тем для учебных практик и ВКР{% endblock %}
+
+{% block content %}
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Hello from Flask Templates</h1>
+      </div>
     </div>
-    <!-- scripts -->
-    <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bower_components/react/react-dom.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/js/main.js') }}"></script>
-  </body>
-</html>
+  </div>
+</section>
+{% endblock %}

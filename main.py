@@ -22,9 +22,14 @@ db.init_app(app)
 def index():
     return render_template('index.html')
 
+@app.route('/lk.html')
+def lk():
+    user = Users.query.filter_by(id=1).first()
 
+    return render_template('lk.html', user=user)
 
 if __name__ == '__main__':
+
     if (len(sys.argv) > 1) and (sys.argv[1] == "init"):
         init_db()
     else:
