@@ -74,14 +74,11 @@ def google_callback():
         audience=GOOGLE_CLIENT_ID
     )
 
-    print (id_info)
-
     avatar_uri = os.urandom(16).hex()
     avatar_uri = avatar_uri + ".jpg"
 
     if 'picture' in id_info:
         r = requests.get(id_info.get('picture'), allow_redirects=True)
-        print(r.status_code)
         open('static/assets/avatars/' + avatar_uri, 'wb').write(r.content)
 
     user = Users.query.filter_by(google_id=id_info.get('email')).first()
@@ -128,7 +125,7 @@ def vk_callback():
     access_token = access_token_json['access_token']
 
     # Get user name
-    response = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(vk_id) + '&fields=bdate,photo_100&access_token=' + str(access_token) + '&v=5.130')
+    response = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(vk_id) + '&fields=photo_100&access_token=' + str(access_token) + '&v=5.130')
     vk_user = json.loads(response.text)
 
     avatar_uri = os.urandom(16).hex()
@@ -136,7 +133,6 @@ def vk_callback():
 
     if 'photo_100' in vk_user['response'][0]:
         r = requests.get(vk_user['response'][0]['photo_100'], allow_redirects=True)
-        print (r.status_code)
         open('static/assets/avatars/' + avatar_uri, 'wb').write(r.content)
 
     user = Users.query.filter_by(vk_id=vk_id).first()
