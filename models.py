@@ -1,10 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from os import urandom
 
 db = SQLAlchemy()
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     email = db.Column(db.String(255), unique=True, nullable=True)
@@ -19,6 +20,7 @@ class Users(db.Model):
     contacts = db.Column(db.String(512), nullable=True)
 
     vk_id = db.Column(db.String(255), nullable=True)
+    vkaccesstoken = db.Column(db.String(512), nullable=True)
     fb_id = db.Column(db.String(255), nullable=True)
     google_id = db.Column(db.String(255), nullable=True)
 
@@ -73,8 +75,9 @@ def init_db():
     # Create users
     print ("Create users")
     for user in users:
-        u = Users(email=user['email'], password_hash = generate_password_hash(urandom(16).hex()), first_name = user['first_name'], last_name = user['last_name'],
-                 avatar_uri = user['avatar_uri'])
+        u = Users(email=user['email'], password_hash = generate_password_hash(urandom(16).hex()),
+                  first_name = user['first_name'], last_name = user['last_name'],
+                  avatar_uri = user['avatar_uri'])
 
         db.session.add(u)
         db.session.commit()
