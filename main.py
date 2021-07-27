@@ -18,9 +18,11 @@ app.config['SECRET_KEY'] = os.urandom(16).hex()
 db.app = app
 db.init_app(app)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/lk.html')
 def lk():
@@ -28,9 +30,17 @@ def lk():
 
     return render_template('lk.html', user=user)
 
+
+@app.route('/edit-lk.html')
+def edit_lk():
+    user = Users.query.filter_by(id=1).first()
+
+    return render_template('edit_lk.html', user=user)
+
+
 if __name__ == '__main__':
 
     if (len(sys.argv) > 1) and (sys.argv[1] == "init"):
         init_db()
     else:
-        app.run(port=5000)
+        app.run(port=5000, debug=True)
