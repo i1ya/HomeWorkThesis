@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys, os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from sqlalchemy.sql.expression import func
 
 from models import db, init_db, Users, ThesesThemes, Level
@@ -19,8 +19,10 @@ db.app = app
 db.init_app(app)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def start():
+    return render_template("index.html")
+
+
 
 @app.route('/lk.html')
 def lk():
@@ -28,9 +30,19 @@ def lk():
 
     return render_template('lk.html', user=user)
 
+@app.route('/register-basic.html')
+def register_basic():
+    return render_template("register-basic.html")
+
+
+@app.route('/password-recovery.html')
+def password_recovery():
+    return render_template("password-recovery.html")
+
+
 if __name__ == '__main__':
 
     if (len(sys.argv) > 1) and (sys.argv[1] == "init"):
         init_db()
     else:
-        app.run(port=5000)
+        app.run(port=5001)
