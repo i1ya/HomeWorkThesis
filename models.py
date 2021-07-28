@@ -11,7 +11,7 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.String(255), unique=True, nullable=True)
     password_hash = db.Column(db.String(255), unique=False, nullable=True)
 
-    first_name = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(255), nullable=True)
     middle_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
 
@@ -48,10 +48,12 @@ class ThesesThemes(db.Model):
 
     title_ru = db.Column(db.String(255), default='', nullable=False)
     description = db.Column(db.String(1024), default='', nullable=True)
-    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), default=1, nullable=False)
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), default=1, nullable=True)
 
     supervisor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     advisor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+
+    publish_year = db.Column(db.Integer, default=2021, nullable=False)
 
     requirements = db.Column(db.String(512), nullable=True)
 

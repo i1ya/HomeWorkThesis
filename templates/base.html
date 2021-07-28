@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
-  <head lang="en">
+<head lang="en">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="author" content="Обучающиеся и преподаватели кафедры СП">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- styles -->
     <!-- Favicon -->
@@ -12,34 +15,136 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='/assets/libs/animate.css/animate.min.css') }}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/libs/@fortawesome/fontawesome-free/css/all.min.css') }} ">
-  </head>
-  <body>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='/assets/libs/@fortawesome/fontawesome-free/css/all.min.css') }} ">
+</head>
+<body>
 
-   {% block content %}{% endblock %}
+<header class="header-transparent" id="header-main">
+        <!-- Navbar -->
+        <nav class="navbar navbar-main navbar-expand-lg navbar-light" id="navbar-main">
+            <div class="container">
+                <!-- Brand -->
+                <div class="px-0 media d-flex w-100">
+
+                    <a href="https://se.math.spbu.ru">
+                        <figure>
+                            <img alt="Image placeholder" src="{{ url_for('static', filename='/assets/img/logo-black.svg') }}" class="img-fluid">
+                        </figure>
+                    </a>
+
+                <!-- Toggler -->
+                <button class="navbar-toggler my-auto" type="button" data-toggle="collapse" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Collapse -->
+                <div class="collapse navbar-collapse navbar-collapse-overlay" id="navbar-main-collapse">
+                    <!-- Toggler -->
+                    <div class="position-relative">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main-collapse" aria-controls="navbar-main-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+
+                    <!-- Right navigation -->
+                    <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+                        <li class="nav-item nav-item-spaced dropdown dropdown-animate" data-toggle="hover">
+                                <a class="text-dark nav-link" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                    Как это работает
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md p-0">
+                                    <div class="list-group list-group-flush px-lg-4">
+                                        <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action" role="button">
+                                            <div class="d-flex">
+                                                <!-- Media body -->
+                                                <div class="ml-3">
+                                                    <small class="text-sm">О сервисе</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        <li class="nav-item nav-item-spaced dropdown dropdown-animate" data-toggle="hover">
+                                <a class="text-dark nav-link" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                    Утвержденные темы
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md p-0">
+                                    <div class="list-group list-group-flush px-lg-4">
+                                        <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action" role="button">
+                                            <div class="d-flex">
+                                                <!-- Media body -->
+                                                <div class="ml-3">
+                                                    <small class="text-sm">На 2021-2022 учебный год</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item nav-item-spaced dropdown dropdown-animate" data-toggle="hover">
+                                <a class="text-dark nav-link" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                                    Профиль
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-md p-0">
+                                    <div class="list-group list-group-flush px-lg-4">
+                                        <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action" role="button">
+                                            <div class="d-flex">
+                                                <!-- Media body -->
+                                                <div class="ml-3">
+                                                    <small class="text-sm">Редактирование профиля</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="list-group list-group-flush px-lg-4">
+                                        <a href="{{ url_for('index') }}" class="list-group-item list-group-item-action" role="button">
+                                            <div class="d-flex">
+                                                <!-- Media body -->
+                                                <div class="ml-3">
+                                                    <small class="text-sm">Выход</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+{% block content %}{% endblock %}
 
 <!-- Core JS  -->
-    <script src="{{ url_for('static', filename='/assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/assets/libs/svg-injector/dist/svg-injector.min.js') }}" async defer></script>
-    <script src="{{ url_for('static', filename='/assets/libs/feather-icons/dist/feather.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/assets/libs/in-view/dist/in-view.min.js') }}" async defer></script>
-    <script src="{{ url_for('static', filename='/assets/libs/sticky-kit/dist/sticky-kit.min.js') }}" async defer></script>
-    <script src="{{ url_for('static', filename='/assets/libs/imagesloaded/imagesloaded.pkgd.min.js') }}" async defer></script>
-    <script src="{{ url_for('static', filename='/assets/libs/bootstrap-notify/bootstrap-notify.min.js') }}" async defer></script>
-    <script src="{{ url_for('static', filename='/assets/libs/autosize/dist/autosize.min.js') }}" async defer></script>
-    <!-- Google maps -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA74mo0V79zPcSWjgUMe9AdmLy3-ruPKLs"></script>
-    <!-- Recaptcha -->
-    <!-- script src='https://www.google.com/recaptcha/api.js' async defer></script -->
-    <!-- Quick JS -->
-    <script src="{{ url_for('static', filename='/assets/js/quick-website.js') }}"></script>
-    <!-- Feather Icons -->
-    <script>
+<script src="{{ url_for('static', filename='/assets/libs/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='/assets/libs/svg-injector/dist/svg-injector.min.js') }}" async
+        defer></script>
+<script src="{{ url_for('static', filename='/assets/libs/feather-icons/dist/feather.min.js') }}"></script>
+<script src="{{ url_for('static', filename='/assets/libs/in-view/dist/in-view.min.js') }}" async defer></script>
+<script src="{{ url_for('static', filename='/assets/libs/sticky-kit/dist/sticky-kit.min.js') }}" async defer></script>
+<script src="{{ url_for('static', filename='/assets/libs/imagesloaded/imagesloaded.pkgd.min.js') }}" async
+        defer></script>
+<script src="{{ url_for('static', filename='/assets/libs/bootstrap-notify/bootstrap-notify.min.js') }}" async
+        defer></script>
+<script src="{{ url_for('static', filename='/assets/libs/autosize/dist/autosize.min.js') }}" async defer></script>
+<!-- Google maps -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA74mo0V79zPcSWjgUMe9AdmLy3-ruPKLs"></script>
+<!-- Recaptcha -->
+<!-- script src='https://www.google.com/recaptcha/api.js' async defer></script -->
+<!-- Quick JS -->
+<script src="{{ url_for('static', filename='/assets/js/quick-website.js') }}"></script>
+<!-- Feather Icons -->
+<script>
         feather.replace({
             'width': '1em',
             'height': '1em'
         })
-    </script>
-  </body>
+
+</script>
+</body>
 </html>

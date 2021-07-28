@@ -3,19 +3,16 @@
 {% block title %}Сервис по сбору тем для учебных практик и ВКР{% endblock %}
 
 {% block content %}
-<section>
-    <div class = "container">
-        <div class="row row-grid align-items-center" style="padding-top: 60px">
+<section class="slice pt-0">
+    <div class="container">
+        <div class="row row-grid align-items-center pt-5">
             <!--текст слева-->
             <div class="col-12 col-md-6 col-lg-7 order-md-1 pr-md-5">
                 <!-- Heading -->
                 <h3 class="text-center text-md-left mb-3">
-                    Сервис для предложения тем по учебным практикам и ВКР для студентов кафедры Системного программирования
+                    Сервис для предложения тем по учебным практикам и ВКР для студентов кафедры Системного
+                    программирования
                 </h3>
-                <!-- Text -->
-                <h6 class="lead text-center text-md-left">
-                    тут будет описание
-                </h6>
             </div>
 
             <!--форма входа-->
@@ -29,24 +26,39 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span>
+                                    <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                                        height="1em" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-user"><path
+                                            d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7"
+                                                                                                         r="4"></circle></svg></span>
                                 </div>
-                                <input type="login" class="form-control" id="input-login" name="login" placeholder="login">
+                                <input type="login" class="form-control" id="input-login" name="login"
+                                       placeholder="login">
                             </div>
                         </div>
                         <div class="form-group mb-0">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-key"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg></span>
+                                    <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                                        height="1em" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-key"><path
+                                            d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg></span>
                                 </div>
-                                <input type="password" class="form-control" id="input-password" name="password" placeholder="Password">
+                                <input type="password" class="form-control" id="input-password" name="password"
+                                       placeholder="Password">
                             </div>
                         </div>
                         <div class="row" style="margin-top: 2em">
-                            <div class = "col-7">
-                                <button type="button" class="btn btn-link" onclick="pass_rec_page_switch()">Забыли пароль?</button>
+                            <div class="col-7">
+                                <button type="button" class="btn btn-link" onclick="pass_rec_page_switch()">Забыли
+                                    пароль?
+                                </button>
                             </div>
-                            <div class = "col-5">
+                            <div class="col-5">
                                 <button type="button" class="btn btn-block btn-primary">Войти</button>
                             </div>
                         </div>
@@ -57,14 +69,17 @@
                     <!-- Alternative login -->
                     <div class="row">
                         <div class="col-sm-6">
-                            <a class="btn btn-block btn-neutral btn-icon px-2 mb-3 mb-sm-0" href="https://oauth.vk.com/authorize?client_id=7912054&display=page&redirect_uri=http://127.0.0.1:5000/vk_callback&scope=friends&response_type=code&v=5.130">
-                                <span class="btn-inner--icon"><img src="/assets/img/icons/brands/vk.svg" alt="Image placeholder"></span>
+                            <a class="btn btn-block btn-neutral btn-icon px-2 mb-3 mb-sm-0"
+                               href="https://oauth.vk.com/authorize?client_id=7912054&display=page&redirect_uri=http://127.0.0.1:5000/vk_callback&scope=friends&response_type=code&v=5.130">
+                                <span class="btn-inner--icon"><img src="/assets/img/icons/brands/vk.svg"
+                                                                   alt="Image placeholder"></span>
                                 <span class="btn-inner--text">Вконтакте</span>
                             </a>
                         </div>
                         <div class="col-sm-6">
                             <a href="{{ url_for('google_login') }}" class="btn btn-block btn-neutral btn-icon px-2">
-                                <span class="btn-inner--icon"><img src="/assets/img/icons/brands/google.svg" alt="Image placeholder"></span>
+                                <span class="btn-inner--icon"><img src="/assets/img/icons/brands/google.svg"
+                                                                   alt="Image placeholder"></span>
                                 <span class="btn-inner--text">Google</span>
                             </a>
                         </div>
@@ -79,10 +94,68 @@
     </div>
 </section>
 
+<section class="slice pt-0 bg-section-secondary">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8 col-md-10">
+                <h2 class=" mt-4">Как это работает</h2>
+                <div class="mt-2">
+                    <p class="lead lh-180">Формулировка и утверждение тем для учебных практик и ВКР.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-process-step">
+            <div class="container">
+                <div class="row row-grid justify-content-between">
+                    <div class="col-xl-5 col-lg-6">
+                        <div class="pr-md-4">
+                            <span class="badge badge-warning badge-pill">Шаг 1</span>
+                            <h3 class="h2 mt-4">Выбор задачи</h3>
+                            <p class="lead lh-190 my-4">
+                                Вы, посмотрев на <a href="https://se.math.spbu.ru/theses.html?supervisor=0&startdate=2021&enddate=2021" target="_blank">защиты этого года</a>, придумываете и обсуждаете с коллегами задачи, которые не критичны для бизнеса, но потенциально интересны, при этом вы готовы ждать результатов до следующего мая (окончательных результатов).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-6">
+                        <div class="pr-md-4">
+                            <span class="badge badge-success badge-pill">Шаг 2</span>
+                            <h3 class="h2 mt-4">Формулировка тем</h3>
+                            <p class="lead lh-190 my-4">По результатам шага 1 формулируете темы учебных практик и ВКР. Про каждую пишете где-то полстраницы текста о том, что именно надо сделать и зачем, какие технологии хочется использовать и могут ли результаты быть опубликованы как open source. Добавляете тему у себя в личном кабинете.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-process-step">
+            <div class="container">
+                <div class="row row-grid justify-content-between">
+                     <div class="col-xl-5 col-lg-6">
+                        <div class="pr-md-4">
+                            <span class="badge badge-success badge-pill">Шаг 3</span>
+                            <h3 class="h2 mt-4">Утверждение тем</h3>
+                            <p class="lead lh-190 my-4">Мы на кафедре обсуждаем предложенные темы и утверждаем наиболее интересные, о результатах сообщаем вам через личный кабинет.</p>
+                        </div>
+                    </div>
+                     <div class="col-xl-5 col-lg-6">
+                        <div class="pr-md-4">
+                            <span class="badge badge-primary badge-pill">Шаг 4</span>
+                            <h3 class="h2 mt-4">Задание на учебную практику или ВКР</h3>
+                            <p class="lead lh-190 my-4">Дальше мы с вами обсуждаем предложения и совместно вырабатываем задание на ВКР, где более подробно описано, что ожидается в результате, каковы этапы работы, с чего начать, что почитать, какова схема взаимодействия (этапы работы, отчётность, сроки), что ожидается от обучающегося в плане начальных знаний.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <script>
 function pass_rec_page_switch()
 {
      location.href = "{{ url_for('password_recovery') }}";
 }
+
 </script>
 {% endblock %}
