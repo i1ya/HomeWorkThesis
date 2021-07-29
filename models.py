@@ -26,6 +26,8 @@ class Users(UserMixin, db.Model):
 
     department = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=True)
 
+    thesesthemes = db.relationship("ThesesThemes", backref=db.backref("author", uselist=False), foreign_keys = 'ThesesThemes.author_id')
+
     def get_name(self):
         return f"{self.last_name} {self.first_name} {self.middle_name}"
 
