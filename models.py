@@ -65,7 +65,7 @@ class Level(db.Model):
 def init_db():
     users = [
         {'email': 'ilya@hackerdom.ru', 'last_name': 'Зеленчук', 'first_name': 'Илья',
-         'avatar_uri': 'zelenchuk.jpg'}
+         'middle_name': 'Валерьевич', 'avatar_uri': 'zelenchuk.jpg'}
     ]
 
     # Init DB
