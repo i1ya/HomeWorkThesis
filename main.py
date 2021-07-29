@@ -9,13 +9,17 @@ import google.auth.transport.requests
 from google.oauth2 import id_token
 from pip._vendor import cachecontrol
 
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+
 import requests
 import json
 import sys, os
 import pathlib
 
 
-from models import db, init_db, Users, ThesesThemes, Level
+from models import db, init_db, Users, ThesesThemes, Level, Department
+
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
 # Flask configs
@@ -25,6 +29,23 @@ app.config['APPLICATION_ROOT'] = '/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///theseswork.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(16).hex()
+
+# Init Flask-Admin
+class MyModelView(ModelView):
+    def is_accessible(self):
+        if current_user.is_authenticated:
+            return (current_user.id < 5)
+        else:
+            return False
+
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        if current_user.is_authenticated:
+            return (current_user.id < 5)
+        else:
+            return False
+
+admin = Admin(app, template_mode='bootstrap3', index_view=MyAdminIndexView())
 
 # Init Database
 db.app = app
@@ -179,6 +200,11 @@ def lk():
     user = Users.query.filter_by(id=current_user.id).first()
 
     return render_template('lk.html', user=user)
+
+admin.add_view(MyModelView(Users, db.session))
+admin.add_view(MyModelView(Department, db.session))
+admin.add_view(MyModelView(Level, db.session))
+admin.add_view(MyModelView(ThesesThemes, db.session))
 
 if __name__ == '__main__':
 
