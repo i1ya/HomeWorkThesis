@@ -196,10 +196,11 @@ def password_recovery():
 @app.route('/lk.html')
 @login_required
 def lk():
+    themes = ThesesThemes.query.filter_by(author_id=current_user.id).all()
 
     user = Users.query.filter_by(id=current_user.id).first()
 
-    return render_template('lk.html', user=user)
+    return render_template('lk.html', user=user, themes=themes)
 
 admin.add_view(MyModelView(Users, db.session))
 admin.add_view(MyModelView(Department, db.session))
