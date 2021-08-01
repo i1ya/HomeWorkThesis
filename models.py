@@ -1,17 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from os import urandom
 
 db = SQLAlchemy()
 
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     email = db.Column(db.String(255), unique=True, nullable=True)
     password_hash = db.Column(db.String(255), unique=False, nullable=True)
 
-    first_name = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(255), nullable=True)
     middle_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
 
@@ -20,6 +21,7 @@ class Users(db.Model):
     contacts = db.Column(db.String(512), nullable=True)
 
     vk_id = db.Column(db.String(255), nullable=True)
+    vkaccesstoken = db.Column(db.String(512), nullable=True)
     fb_id = db.Column(db.String(255), nullable=True)
     google_id = db.Column(db.String(255), nullable=True)
 
@@ -45,17 +47,22 @@ class Department(db.Model):
 class ThesesThemes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
     title_ru = db.Column(db.String(255), default='', nullable=False)
     description = db.Column(db.String(1024), default='', nullable=True)
-    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), default=1, nullable=False)
+    level_id = db.Column(db.Integer, db.ForeignKey('level.id'), default=1, nullable=True)
 
     supervisor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     advisor_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
 
+    publish_year = db.Column(db.Integer, default=2021, nullable=True)
     requirements = db.Column(db.String(512), nullable=True)
+    techs = db.Column(db.String(512), nullable=True)
 
+
+    def __repr__(self):
+        return f"Тема {self.title_ru}, Описание {self.description},{self.technology}, ,Пожелания {self.requirements}"
 
 class Level(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -65,8 +72,24 @@ class Level(db.Model):
 def init_db():
     users = [
         {'email': 'ilya@hackerdom.ru', 'last_name': 'Зеленчук', 'first_name': 'Илья',
-         'middle_name': 'Валерьевич', 'avatar_uri': 'zelenchuk.jpg'}
+         'avatar_uri': 'zelenchuk.jpg'}
     ]
+
+    wtypes = [
+        {'title': 'Учебная практика (курсовая)'},
+        {'title': 'ВКР бакалавриата'},
+        {'title': 'Учебная практика (курсовая) и ВКР бакалавриата'},
+        {'title': 'Учебная практика (курсовая), ВКР бакалавриата, ВКР магистратура',
+         'title': 'ВКР бакалавриата и ВКР магистратура'}
+    ]
+
+    # Create WorkTypes
+    print("Create worktypes")
+    for w in wtypes:
+        wt = Level(title=w['title'])
+        db.session.add(wt)
+        db.session.commit()
+
 
     # Init DB
     db.session.commit()  # https://stackoverflow.com/questions/24289808/drop-all-freezes-in-flask-with-sqlalchemy
@@ -77,7 +100,8 @@ def init_db():
     print("Create users")
     for user in users:
         u = Users(email=user['email'], password_hash=generate_password_hash(urandom(16).hex()),
-                  first_name=user['first_name'], last_name=user['last_name'], avatar_uri=user['avatar_uri'])
+                  first_name=user['first_name'], last_name=user['last_name'],
+                  avatar_uri=user['avatar_uri'])
 
         db.session.add(u)
         db.session.commit()
