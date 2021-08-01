@@ -202,6 +202,10 @@ def lk():
 
     return render_template('lk.html', user=user, themes=themes)
 
+@app.route('/delete/<theme_id>')
+def delete(theme_id):
+    return render_template('delete.html', theme_id=theme_id)
+
 admin.add_view(MyModelView(Users, db.session))
 admin.add_view(MyModelView(Department, db.session))
 admin.add_view(MyModelView(Level, db.session))
