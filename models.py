@@ -58,7 +58,7 @@ class ThesesThemes(db.Model):
 
     publish_year = db.Column(db.Integer, default=2021, nullable=True)
     requirements = db.Column(db.String(512), nullable=True)
-    techs = db.Column(db.String(512), nullable=True)
+    # techs = db.Column(db.String(512), nullable=True)
 
 
     def __repr__(self):
