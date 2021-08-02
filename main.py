@@ -204,7 +204,12 @@ def lk():
 
 @app.route('/delete/<theme_id>')
 def delete(theme_id):
-    return render_template('delete.html', theme_id=theme_id)
+    theme = ThesesThemes.query.filter_by(id=theme_id).first()
+    db.session.delete(theme)
+    db.session.commit()
+
+    return redirect(url_for('lk'))
+    #return render_template('delete.html', theme=theme)
 
 admin.add_view(MyModelView(Users, db.session))
 admin.add_view(MyModelView(Department, db.session))
