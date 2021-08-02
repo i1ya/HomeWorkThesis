@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from flask import Flask, render_template, redirect, url_for, abort
 from flask import make_response, session, request, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -7,15 +6,18 @@ from sqlalchemy.exc import SQLAlchemyError
 from google_auth_oauthlib.flow import Flow
 import google.auth.transport.requests
 from google.oauth2 import id_token
-from pip._vendor import cachecontrol
 from werkzeug.security import generate_password_hash, check_password_hash
+from pip._vendor import cachecontrol
+
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
 
 import requests
 import json
 import sys, os
 import pathlib
 
-from models import db, init_db, Users, ThesesThemes, Level
+from models import db, init_db, Users, ThesesThemes, Level, Department
 
 app = Flask(__name__, static_url_path='', static_folder='static', template_folder='templates')
 
@@ -26,6 +28,23 @@ app.config['APPLICATION_ROOT'] = '/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///theseswork.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(16).hex()
+
+# Init Flask-Admin
+class MyModelView(ModelView):
+    def is_accessible(self):
+        if current_user.is_authenticated:
+            return (current_user.id < 5)
+        else:
+            return False
+
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        if current_user.is_authenticated:
+            return (current_user.id < 5)
+        else:
+            return False
+
+admin = Admin(app, template_mode='bootstrap3', index_view=MyAdminIndexView())
 
 # Init Database
 db.app = app
@@ -42,16 +61,13 @@ client_secrets_file = os.path.join(pathlib.Path(__file__).parent, "client_secret
 
 flow = Flow.from_client_secrets_file(
     client_secrets_file=client_secrets_file,
-    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email",
-            "openid"],
+    scopes=["https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email", "openid"],
     redirect_uri="http://127.0.0.1:5000/google_callback"
 )
-
 
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
-
 
 @app.route("/google_login")
 def google_login():
@@ -59,9 +75,9 @@ def google_login():
     session["state"] = state
     return redirect(authorization_url)
 
-
 @app.route('/google_callback')
 def google_callback():
+
     flow.fetch_token(authorization_response=request.url)
 
     if not session["state"] == request.args["state"]:
@@ -109,18 +125,17 @@ def google_callback():
     login_user(user, remember=True)
     return redirect(url_for('lk'))
 
-
 # https://vk.com/dev/authcode_flow_user
 @app.route("/vk_callback")
 def vk_callback():
+
     user_code = request.args.get('code')
 
     if not user_code:
         return redirect(url_for('index'))
 
     # Get access token
-    response = requests.get(
-        'https://oauth.vk.com/access_token?client_id=7912054&client_secret=rIE4Ef9876ktwXHFrgyU&redirect_uri=http://127.0.0.1:5000/vk_callback&code=' + user_code)
+    response = requests.get('https://oauth.vk.com/access_token?client_id=7912054&client_secret=rIE4Ef9876ktwXHFrgyU&redirect_uri=http://127.0.0.1:5000/vk_callback&code=' + user_code)
     access_token_json = json.loads(response.text)
 
     if "error" in access_token_json:
@@ -130,9 +145,7 @@ def vk_callback():
     access_token = access_token_json['access_token']
 
     # Get user name
-    response = requests.get(
-        'https://api.vk.com/method/users.get?user_ids=' + str(vk_id) + '&fields=photo_100&access_token=' + str(
-            access_token) + '&v=5.130')
+    response = requests.get('https://api.vk.com/method/users.get?user_ids=' + str(vk_id) + '&fields=photo_100&access_token=' + str(access_token) + '&v=5.130')
     vk_user = json.loads(response.text)
 
     user = Users.query.filter_by(vk_id=vk_id).first()
@@ -166,7 +179,6 @@ def vk_callback():
     login_user(user, remember=True)
     return redirect(url_for('lk'))
 
-
 # login
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -183,7 +195,6 @@ def index():
         else:
             flash('Email does not exist.', category='error')
     return render_template('index.html', user=current_user)
-
 
 @app.route('/register-basic.html', methods=['GET', 'POST'])
 def register_basic():
@@ -206,11 +217,12 @@ def register_basic():
             return redirect(url_for('lk'))
     return render_template("register-basic.html", user=current_user)
 
-
-@app.route('/password-recovery.html')
+@app.route('/password-recovery.html', methods=['GET', 'POST'])
 def password_recovery():
+    if current_user.is_authenticated:
+        flash('Вы уже вошли в аккаунт', category='success')
+        return redirect(url_for('index'))
     return render_template("password-recovery.html")
-
 
 @app.route('/lk.html')
 @login_required
@@ -218,6 +230,10 @@ def lk():
     user = Users.query.filter_by(id=current_user.id).first()
     return render_template('lk.html', user=user)
 
+admin.add_view(MyModelView(Users, db.session))
+admin.add_view(MyModelView(Department, db.session))
+admin.add_view(MyModelView(Level, db.session))
+admin.add_view(MyModelView(ThesesThemes, db.session))
 
 if __name__ == '__main__':
     if (len(sys.argv) > 1) and (sys.argv[1] == "init"):

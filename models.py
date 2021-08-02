@@ -5,7 +5,6 @@ from os import urandom
 
 db = SQLAlchemy()
 
-
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
@@ -27,6 +26,8 @@ class Users(UserMixin, db.Model):
 
     department = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=True)
 
+    thesesthemes = db.relationship("ThesesThemes", backref=db.backref("author", uselist=False), foreign_keys = 'ThesesThemes.author_id')
+
     def get_name(self):
         return f"{self.last_name} {self.first_name} {self.middle_name}"
 
@@ -36,13 +37,11 @@ class Users(UserMixin, db.Model):
     def __repr__(self):
         return f"{self.last_name}, {self.first_name}, {self.middle_name}"
 
-
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
-    title = db.Column(db.String(255), default='', nullable=False)
+    title= db.Column(db.String(255), default='', nullable=False)
     logo = db.Column(db.String(255), default='empty.png', nullable=False)
-
 
 class ThesesThemes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -60,29 +59,29 @@ class ThesesThemes(db.Model):
 
     requirements = db.Column(db.String(512), nullable=True)
 
-
 class Level(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), default='', nullable=False)
 
-
 def init_db():
+
     users = [
-        {'email': 'ilya@hackerdom.ru', 'last_name': 'Зеленчук', 'first_name': 'Илья',
-         'avatar_uri': 'zelenchuk.jpg'}
-    ]
+        {'email' : 'ilya@hackerdom.ru', 'last_name' : 'Зеленчук', 'first_name' : 'Илья',
+         'avatar_uri' : 'zelenchuk.jpg'}
+        ]
 
     # Init DB
-    db.session.commit()  # https://stackoverflow.com/questions/24289808/drop-all-freezes-in-flask-with-sqlalchemy
+    db.session.commit() # https://stackoverflow.com/questions/24289808/drop-all-freezes-in-flask-with-sqlalchemy
     db.drop_all()
     db.create_all()
 
     # Create users
-    print("Create users")
+    print ("Create users")
     for user in users:
-        u = Users(email=user['email'], password_hash=generate_password_hash(urandom(16).hex()),
-                  first_name=user['first_name'], last_name=user['last_name'],
-                  avatar_uri=user['avatar_uri'])
+        u = Users(email=user['email'], password_hash = generate_password_hash(urandom(16).hex()),
+                  first_name = user['first_name'], last_name = user['last_name'],
+                  avatar_uri = user['avatar_uri'])
 
         db.session.add(u)
         db.session.commit()
