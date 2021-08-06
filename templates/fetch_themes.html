@@ -1,0 +1,56 @@
+{% for theme in themes.items %}
+<div class="row justify-content-center">
+    <div class="col -lg-12">
+        <div class="card border-0">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="mb-2 text-dark"><strong>{{theme.title_ru}}</strong></h6>
+                    </div>
+                </div>
+
+                <p class="card-text mb-2 text-sm text-dark">Требования: {{theme.requirements}}</p>
+
+                <p class="card-text mb-2 text-sm">
+                    {{theme.description}}
+                </p>
+
+                <ul class="card-text list-unstyled mb-0 text-sm">
+                    <li>Уровень темы: <i>{{theme.worktype}}</i></li>
+                    <li>Руководитель: <i>{{theme.supervis}}</i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% if themes.total %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      {% if themes.has_prev %}
+    <li class="page-item">
+      <a class="page-link" href="{{ url_for ('theses_search', page=themes.prev_num, levels=levels, supervisor=supervisor, department=department) }}" tabindex="-1" aria-disabled="true">Назад</a>
+    </li>
+      {% endif %}
+
+      {% for curr_page in themes.iter_pages() %}
+      {% if curr_page %}
+        {% if curr_page != themes.page %}
+            <li class="page-item"><a class="page-link" href="{{ url_for ('theses_search', page=curr_page, levels=levels, supervisor=supervisor, department=department) }}">{{curr_page}}</a></li>
+        {% else %}
+        <li class="page-item active"><span class="page-link">{{curr_page}}<span class="sr-only">(current)</span></span></li>
+        {% endif %}
+      {% else %}
+        <li class="page-item"><span class="page-link"> ... </span></li>
+      {% endif %}
+      {% endfor %}
+
+      {% if themes.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="{{ url_for ('theses_search', page=themes.next_num, levels=levels, supervisor=supervisor, department=department) }}">Вперед</a>
+    </li>
+      {% endif %}
+  </ul>
+</nav>
+{% endif %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Список утвержденных тем{% endblock %}
+
+{% block content %}
+
+<section class="slice pt-1 bg-section-dark">
+    <!-- Container -->
+    <div class="container d-flex align-items-center text-center text-lg-left pt-1 pt-lg-6">
+        <div class="col px-0">
+            <div class="row align-items-center">
+                <div class="col-lg-12 text-center">
+                    <!-- Heading -->
+                    <h1 class="text-white mb-1">
+                        Список утвержденных тем
+                    </h1>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-12 text-center">
+                    <!-- Text -->
+                    <p class="lead text-white opacity-8 mt-1">
+                        Утвержденные темы учебных практик и выпускных квалификационных работ от преподавателей кафедры
+                        системного программирования и компаний-партнеров на 2021-2022 учебный год.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slice clients delimiter-top delimiter-bottom bg-section-secondary" id="theses">
+    <div class="container">
+        <div class="row row-grid">
+            <div class="col-lg-9" id="ThesisList">
+
+                <!-- Title -->
+
+            </div>
+            <div class="col-lg-3 ml-lg-auto">
+                <div data-toggle="sticky" data-sticky-offset="10">
+                    <div class="card">
+                        <div class="card-header px-3">
+                            <span class="h6 mb-0">Фильтры</span>
+                        </div>
+                        <div class="card-body px-3">
+                            {{ filter.csrf_token }}
+                            <p class="text-sm mb-0">
+                                Уровень темы
+                            </p>
+                            <div class="form-group">
+                                {{ filter.levels(class_="custom-select pl-3") }}
+                            </div>
+                            <p class="text-sm mb-0">
+                                Руководитель
+                            </p>
+                            <div class="form-group">
+                                {{ filter.supervisor(class_="custom-select pl-3") }}
+                            </div>
+                            <p class="text-sm mb-0">
+                                Компания
+                            </p>
+                            <div class="form-group">
+                                {{ filter.department(class_="custom-select pl-3") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
