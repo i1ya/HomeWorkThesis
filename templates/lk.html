@@ -14,21 +14,22 @@
                 </h3>
                 <!-- Subtitle -->
                 <span class="text-muted d-block">
-                    {{user.department}}<br>
-                    Статус<br>Название компании
+                    Представитель компании<br>Jetbrains
                 </span>
             </div>
 
             <div class="col-lg-9 col-md">
                 <div class="row align-items-center mb-4">
                     <div class="col">
-                        <h3 class="mb-0">{{themes.size}}</h3>
+                        <h3 class="mb-0">Список моих тем</h3>
                     </div>
                     <button style="height:60px;width:300px" type="button" class="btn btn-primary hover-scale-110">
                         Добавить тему
                     </button>
                 </div>
 
+
+                {% if themes %}
                 {% for theme in themes %}
                 <div class="card border-0">
                     <div class="card-body">
@@ -87,16 +88,19 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p align="justify">Вы действительно хотите удалить тему?</p>
+                                                <p align="justify">Вы действительно хотите удалить тему
+                                                    "{{theme.title_ru}}"?</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">
                                                     Нет
                                                 </button>
-                                                <button type="button" class="btn btn-primary"
-                                                        onclick="{{ url_for('delete', theme_id=theme.id) }}">
-                                                    Да
-                                                </button>
+                                                <a href="{{ url_for('delete', theme_id=theme.id) }}">
+                                                    <button type="button" class="btn btn-primary">
+                                                        Да
+                                                    </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -110,9 +114,14 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <p align="justify">
+                    <br>
+                    Вы ещё не добавили темы учебных практик и ВКР,Вы можете это сделать на данной странице
+                </p>
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
-
 {% endblock %}
